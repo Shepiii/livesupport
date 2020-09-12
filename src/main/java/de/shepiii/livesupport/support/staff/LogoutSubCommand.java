@@ -50,7 +50,7 @@ public final class LogoutSubCommand implements SubCommandExecutor {
     supportQueue.state(SupportQueueState.CLOSED);
     var message = messageRepository.findMessage("support.close.suddenly");
     for (SupportPlayer supportPlayer : supportQueue.waiting()) {
-      supportPlayer.sendMessage(message);
+      supportPlayer.proxiedPlayer().sendMessage(message);
       supportQueue.removeWaiting(supportPlayer);
     }
   }

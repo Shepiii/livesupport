@@ -21,12 +21,12 @@ public final class LeaveSubCommand implements SubCommandExecutor {
   @Override
   public void performSubCommand(SupportPlayer supportPlayer, String[] arguments) {
     if (!supportQueue.waiting().contains(supportPlayer)) {
-      supportPlayer.sendMessage(
+      supportPlayer.proxiedPlayer().sendMessage(
         messageRepository.findMessage("support.queue.leave.notinqueue"));
       return;
     }
     supportQueue.removeWaiting(supportPlayer);
-    supportPlayer.sendMessage(
+    supportPlayer.proxiedPlayer().sendMessage(
       messageRepository.findMessage("support.queue.leave"));
   }
 }

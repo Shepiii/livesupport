@@ -2,16 +2,18 @@ package de.shepiii.livesupport.queue;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Queues;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.shepiii.livesupport.player.SupportPlayer;
 
 import java.util.List;
+import java.util.Queue;
 
 @Singleton
 public final class SupportQueue {
   private final List<SupportPlayer> staffs = Lists.newCopyOnWriteArrayList();
-  private final List<SupportPlayer> waiting = Lists.newCopyOnWriteArrayList();
+  private final Queue<SupportPlayer> waiting = Queues.newConcurrentLinkedQueue();
   private SupportQueueState state = SupportQueueState.CLOSED;
 
   @Inject
@@ -48,7 +50,7 @@ public final class SupportQueue {
     return staffs;
   }
 
-  public List<SupportPlayer> waiting() {
+  public Queue<SupportPlayer> waiting() {
     return waiting;
   }
 

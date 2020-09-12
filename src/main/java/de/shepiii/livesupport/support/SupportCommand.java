@@ -68,7 +68,7 @@ public final class SupportCommand extends Command {
         var punish = punishOptional.get();
         Date date = new Date(punish.getEnd());
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        supportPlayer.sendMessage(
+        supportPlayer.proxiedPlayer().sendMessage(
           messageRepository.findMessage("support.punish.client")
             .replace("{0}", format.format(date)));
         return;
@@ -87,7 +87,7 @@ public final class SupportCommand extends Command {
       var message = messageRepository.findMessage("support.queue.join.first")
         .replace("{0}", player.getDisplayName());
       for (SupportPlayer staff : supportQueue.staffs()) {
-        staff.sendMessage(message);
+        staff.proxiedPlayer().sendMessage(message);
       }
     }
     if (supportPlayer.supportSession().isPresent()

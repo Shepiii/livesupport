@@ -30,36 +30,43 @@ public final class PunishLogSubCommand implements SubCommandExecutor {
       return;
     }
     var targetName = arguments[1];
-    UUIDFetcher.getUUID(targetName, targetId -> {
-      if (targetId == null) {
-        supportPlayer.sendMessage(messageRepository.findMessage("support.punish.notFound"));
-        return;
-      }
-      supportPlayer.sendMessage(
-        messageRepository.findMessage("support.punishlog.firstMessage")
-          .replace("{0}", targetName));
-      punishRepository.findPunishList(targetId, punishes -> {
-        if (punishes == null || punishes.isEmpty()) {
-          supportPlayer.sendMessage(messageRepository.findMessage("support.punishlog.noPunishes"));
-          return;
-        }
-        for (Punish punish : punishes) {
-          displayPunish(supportPlayer, punishes.indexOf(punish), punish);
-        }
-      });
-    });
+    UUIDFetcher.getUUID(targetName, targetId ->
+      showPunishLog(supportPlayer, targetId, targetName));
   }
 
   private boolean canPerform(SupportPlayer supportPlayer, String[] arguments) {
-    if (!supportPlayer.hasPermission("support.punishlog")) {
-      supportPlayer.sendMessage(messageRepository.findMessage("support.noPermission"));
+    if (!supportPlayer.proxiedPlayer().hasPermission("support.punishlog")) {
+      supportPlayer.proxiedPlayer()
+        .sendMessage(messageRepository.findMessage("support.noPermission"));
       return false;
     }
     if (arguments.length != 2) {
-      supportPlayer.sendMessage(messageRepository.findMessage("support.punishlog.wrongarguments"));
+      supportPlayer.proxiedPlayer()
+        .sendMessage(messageRepository.findMessage("support.punishlog.wrongarguments"));
       return false;
     }
     return true;
+  }
+
+  private void showPunishLog(SupportPlayer supportPlayer, UUID targetId, String targetName) {
+    if (targetId == null) {
+      supportPlayer.proxiedPlayer()
+        .sendMessage(messageRepository.findMessage("support.punish.notFound"));
+      return;
+    }
+    supportPlayer.proxiedPlayer().sendMessage(
+      messageRepository.findMessage("support.punishlog.firstMessage")
+        .replace("{0}", targetName));
+    punishRepository.findPunishList(targetId, punishes -> {
+      if (punishes == null || punishes.isEmpty()) {
+        supportPlayer.proxiedPlayer()
+          .sendMessage(messageRepository.findMessage("support.punishlog.noPunishes"));
+        return;
+      }
+      for (Punish punish : punishes) {
+        displayPunish(supportPlayer, punishes.indexOf(punish), punish);
+      }
+    });
   }
 
   private static final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
@@ -70,7 +77,7 @@ public final class PunishLogSubCommand implements SubCommandExecutor {
       if (whoPunishedName == null) {
         whoPunishedName = "N/A";
       }
-      supportPlayer.sendMessage(
+      supportPlayer.proxiedPlayer().sendMessage(
         messageRepository.findMessage("support.punishlog.singlePunish")
           .replace("{Anzahl}", String.valueOf(index))
           .replace("{Datum}", format.format(date))
@@ -114,7 +121,7 @@ public final class PunishLogSubCommand implements SubCommandExecutor {
   private void sendRemovedPunishLogMessage(
     SupportPlayer supportPlayer, String whoUnpunishedName
   ) {
-    supportPlayer.sendMessage(
+    supportPlayer.proxiedPlayer().sendMessage(
       messageRepository.findMessage("support.punishlog.removed")
         .replace("{0}", whoUnpunishedName)
     );

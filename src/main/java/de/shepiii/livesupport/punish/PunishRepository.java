@@ -2,7 +2,7 @@ package de.shepiii.livesupport.punish;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import de.shepiii.livesupport.repository.Repository;
+import de.shepiii.livesupport.database.MySQLRepository;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -14,7 +14,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 @Singleton
-public final class PunishRepository extends Repository<Punish> {
+public final class PunishRepository extends MySQLRepository<Punish> {
   @Inject
   private PunishRepository(EntityManager entityManager) {
     super(entityManager, Punish.class);

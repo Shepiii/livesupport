@@ -20,17 +20,17 @@ public final class NextSubCommand implements SubCommandExecutor {
 
   @Override
   public void performSubCommand(SupportPlayer supportPlayer, String[] arguments) {
-    if (!supportPlayer.hasPermission("support.support.next")) {
-      supportPlayer.sendMessage(messageRepository.findMessage("support.noPermission"));
+    if (!supportPlayer.proxiedPlayer().hasPermission("support.support.next")) {
+      supportPlayer.proxiedPlayer().sendMessage(messageRepository.findMessage("support.noPermission"));
       return;
     }
     if (!supportQueue.staffs().contains(supportPlayer)) {
-      supportPlayer.sendMessage(
+      supportPlayer.proxiedPlayer().sendMessage(
         messageRepository.findMessage("support.staff.next.notloggedin"));
       return;
     }
     if (supportPlayer.supportSession().isPresent()) {
-      supportPlayer.sendMessage(messageRepository.findMessage("support.staff.next.alreadyinTalk"));
+      supportPlayer.proxiedPlayer().sendMessage(messageRepository.findMessage("support.staff.next.alreadyinTalk"));
       return;
     }
     supportNext(supportPlayer);
@@ -38,16 +38,16 @@ public final class NextSubCommand implements SubCommandExecutor {
 
   private void supportNext(SupportPlayer staff) {
     if (supportQueue.waiting().isEmpty()) {
-      staff.sendMessage(messageRepository.findMessage("support.staff.next.notopen"));
+      staff.proxiedPlayer().sendMessage(messageRepository.findMessage("support.staff.next.notopen"));
       return;
     }
     var client = supportQueue.waiting().iterator().next();
     var supportSession = SupportSession.create(SupportSessionState.ACTIVE, staff, client);
     client.supportSession(supportSession);
     staff.supportSession(supportSession);
-    client.sendMessage(messageRepository.findMessage("support.client.opensupport")
+    client.proxiedPlayer().sendMessage(messageRepository.findMessage("support.client.opensupport")
       .replace("{0}", staff.proxiedPlayer().getDisplayName()));
-    staff.sendMessage(messageRepository.findMessage("support.staff.next.succesfull")
+    staff.proxiedPlayer().sendMessage(messageRepository.findMessage("support.staff.next.succesfull")
       .replace("{0}", client.proxiedPlayer().getDisplayName()));
     supportQueue.removeWaiting(client);
   }

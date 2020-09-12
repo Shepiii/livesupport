@@ -1,4 +1,4 @@
-package de.shepiii.livesupport.repository;
+package de.shepiii.livesupport.database;
 
 import javax.persistence.EntityManager;
 import java.util.Optional;
@@ -6,12 +6,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-public class Repository<T> {
+public class MySQLRepository<T> {
   private final ExecutorService executorService = Executors.newCachedThreadPool();
   private final EntityManager entityManager;
   private final Class<T> tClass;
 
-  protected Repository(EntityManager entityManager, Class<T> tClass) {
+  protected MySQLRepository(EntityManager entityManager, Class<T> tClass) {
     this.entityManager = entityManager;
     this.tClass = tClass;
   }

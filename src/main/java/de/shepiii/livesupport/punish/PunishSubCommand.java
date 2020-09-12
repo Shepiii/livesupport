@@ -33,14 +33,14 @@ public final class PunishSubCommand implements SubCommandExecutor {
     }
     UUIDFetcher.getUUID(arguments[1], targetId -> {
       if (targetId == null) {
-        supportPlayer.sendMessage(
+        supportPlayer.proxiedPlayer().sendMessage(
           messageRepository.findMessage("support.punish.notFound")
             .replace("{0}", arguments[1]));
         return;
       }
       punishRepository.isPunished(targetId, punished -> {
         if (punished) {
-          supportPlayer.sendMessage(messageRepository.findMessage("support.punish.alreadypunished"));
+          supportPlayer.proxiedPlayer().sendMessage(messageRepository.findMessage("support.punish.alreadypunished"));
           return;
         }
         try {
@@ -53,12 +53,12 @@ public final class PunishSubCommand implements SubCommandExecutor {
   }
 
   private boolean canPerform(SupportPlayer supportPlayer, String[] arguments) {
-    if (!supportPlayer.hasPermission("support.punish")) {
-      supportPlayer.sendMessage(messageRepository.findMessage("support.noPermission"));
+    if (!supportPlayer.proxiedPlayer().hasPermission("support.punish")) {
+      supportPlayer.proxiedPlayer().sendMessage(messageRepository.findMessage("support.noPermission"));
       return false;
     }
     if (arguments.length != 2) {
-      supportPlayer.sendMessage(messageRepository.findMessage("support.punish.wrongarguments"));
+      supportPlayer.proxiedPlayer().sendMessage(messageRepository.findMessage("support.punish.wrongarguments"));
       return false;
     }
     return true;
@@ -76,7 +76,7 @@ public final class PunishSubCommand implements SubCommandExecutor {
         var punish = new Punish(
           targetId.toString(), supportPlayer.id().toString(), end);
         punishRepository.saveOrUpdate(punish);
-        supportPlayer.sendMessage(
+        supportPlayer.proxiedPlayer().sendMessage(
           messageRepository.findMessage("support.punish.punished")
             .replace("{0}", targetName));
       } catch (Exception exception) {

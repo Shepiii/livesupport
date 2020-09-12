@@ -10,7 +10,7 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import de.shepiii.livesupport.message.MessageConfiguration;
 import de.shepiii.livesupport.message.MessageConfigurationFile;
-import de.shepiii.livesupport.repository.config.RepositoryFile;
+import de.shepiii.livesupport.database.config.RepositoryFile;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import javax.persistence.EntityManager;

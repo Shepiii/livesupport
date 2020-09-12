@@ -42,8 +42,8 @@ public final class SupportSessionTrigger implements Listener {
     var message = messageRepository.findMessage("support.chat.format")
       .replace("{0}", player.getDisplayName())
       .replace("{nachricht}", rawMessage);
-    supportSession.staff().sendMessage(message);
-    supportSession.client().sendMessage(message);
+    supportSession.staff().proxiedPlayer().sendMessage(message);
+    supportSession.client().proxiedPlayer().sendMessage(message);
   }
 
   @EventHandler(priority = EventPriority.LOW)
@@ -52,12 +52,12 @@ public final class SupportSessionTrigger implements Listener {
     var supportPlayer = supportPlayerRegistry.getSupportPlayer(player.getUniqueId());
     supportPlayer.supportSession().ifPresent(supportSession -> {
       if (supportSession.client() == supportPlayer) {
-        supportSession.staff().sendMessage(
+        supportSession.staff().proxiedPlayer().sendMessage(
           messageRepository.findMessage("support.staff.partner.leave"));
         supportSession.staff().supportSession(null);
         return;
       }
-      supportSession.client().sendMessage(
+      supportSession.client().proxiedPlayer().sendMessage(
         messageRepository.findMessage("support.chat.close.suddenly"));
       supportSession.supportSessionState(SupportSessionState.LEFT_BY_STAFF);
     });

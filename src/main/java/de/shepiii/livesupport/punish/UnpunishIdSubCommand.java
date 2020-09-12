@@ -30,17 +30,17 @@ public final class UnpunishIdSubCommand implements SubCommandExecutor {
       var id = Long.valueOf(idString);
       unPunishId(id, supportPlayer);
     } catch (NumberFormatException numberFormatException) {
-      supportPlayer.sendMessage(messageRepository.findMessage("support.unpunish.wrongId"));
+      supportPlayer.proxiedPlayer().sendMessage(messageRepository.findMessage("support.unpunish.wrongId"));
     }
   }
 
   private boolean canPerform(SupportPlayer supportPlayer, String[] arguments) {
-    if (!supportPlayer.hasPermission("support.unpunish")) {
-      supportPlayer.sendMessage(messageRepository.findMessage("support.noPermission"));
+    if (!supportPlayer.proxiedPlayer().hasPermission("support.unpunish")) {
+      supportPlayer.proxiedPlayer().sendMessage(messageRepository.findMessage("support.noPermission"));
       return false;
     }
     if (arguments.length != 2) {
-      supportPlayer.sendMessage(messageRepository.findMessage("support.punish.wrongarguments"));
+      supportPlayer.proxiedPlayer().sendMessage(messageRepository.findMessage("support.punish.wrongarguments"));
       return false;
     }
     return true;
@@ -49,12 +49,12 @@ public final class UnpunishIdSubCommand implements SubCommandExecutor {
   private void unPunishId(Long id, SupportPlayer supportPlayer) {
     punishRepository.findByIdNullable(id, punishOptional -> {
       if (punishOptional.isEmpty()) {
-        supportPlayer.sendMessage(messageRepository.findMessage("support.unpunish.wrongId"));
+        supportPlayer.proxiedPlayer().sendMessage(messageRepository.findMessage("support.unpunish.wrongId"));
         return;
       }
       var punish = punishOptional.get();
       if (punish.isUnPunished()) {
-        supportPlayer.sendMessage(messageRepository.findMessage("support.unpunish.wrongId"));
+        supportPlayer.proxiedPlayer().sendMessage(messageRepository.findMessage("support.unpunish.wrongId"));
         return;
       }
       punish.setUnPunished(true);
@@ -69,7 +69,7 @@ public final class UnpunishIdSubCommand implements SubCommandExecutor {
       if (targetName == null) {
         targetName = "N/A";
       }
-      supportPlayer.sendMessage(
+      supportPlayer.proxiedPlayer().sendMessage(
         messageRepository.findMessage("support.unpunish.succesfull")
           .replace("{0}", targetName)
       );

@@ -26,11 +26,11 @@ public final class SupportTimerTask extends TimerTask {
   @Override
   public void run() {
     for (SupportPlayer staff : supportQueue.staffs()) {
-      staff.sendMessage(message.replace(
+      staff.proxiedPlayer().sendMessage(message.replace(
         placeHolder, String.valueOf(supportQueue.waiting().size())));
     }
     for (SupportPlayer client : supportQueue.waiting()) {
-      client.sendMessage(clientMessage);
+      client.proxiedPlayer().sendMessage(clientMessage);
     }
   }
 }

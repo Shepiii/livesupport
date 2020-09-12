@@ -23,8 +23,8 @@ public final class ListSubCommand implements SubCommandExecutor {
 
   @Override
   public void performSubCommand(SupportPlayer supportPlayer, String[] arguments) {
-    if (!supportPlayer.hasPermission("support.onlineStaff.list")) {
-      supportPlayer.sendMessage(messageRepository.findMessage("support.noPermission"));
+    if (!supportPlayer.proxiedPlayer().hasPermission("support.onlineStaff.list")) {
+      supportPlayer.proxiedPlayer().sendMessage(messageRepository.findMessage("support.noPermission"));
       return;
     }
     var message = messageRepository.findMessage("support.staff.online");
@@ -32,6 +32,6 @@ public final class ListSubCommand implements SubCommandExecutor {
     for (SupportPlayer staff : supportQueue.staffs()) {
       nameList.add(staff.proxiedPlayer().getDisplayName());
     }
-    supportPlayer.sendMessage(message.replace("{0}", nameList.toString()));
+    supportPlayer.proxiedPlayer().sendMessage(message.replace("{0}", nameList.toString()));
   }
 }

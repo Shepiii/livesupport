@@ -16,13 +16,13 @@ public final class FinishSubCommand implements SubCommandExecutor {
 
   @Override
   public void performSubCommand(SupportPlayer supportPlayer, String[] arguments) {
-    if (!supportPlayer.hasPermission("support.chat.finish")) {
-      supportPlayer.sendMessage(
+    if (!supportPlayer.proxiedPlayer().hasPermission("support.chat.finish")) {
+      supportPlayer.proxiedPlayer().sendMessage(
         messageRepository.findMessage("support.noPermission"));
       return;
     }
     if (supportPlayer.supportSession().isEmpty()) {
-      supportPlayer.sendMessage(
+      supportPlayer.proxiedPlayer().sendMessage(
         messageRepository.findMessage("support.staff.finish.noSession"));
       return;
     }
@@ -30,10 +30,10 @@ public final class FinishSubCommand implements SubCommandExecutor {
     var client = supportSession.client();
     supportPlayer.supportSession(null);
     client.supportSession().get().supportSessionState(SupportSessionState.CLOSED);
-    supportPlayer.sendMessage(
+    supportPlayer.proxiedPlayer().sendMessage(
       messageRepository.findMessage("support.staff.finish.succesfully")
         .replace("{0}", client.proxiedPlayer().getDisplayName())
     );
-    client.sendMessage(messageRepository.findMessage("support.chat.close"));
+    client.proxiedPlayer().sendMessage(messageRepository.findMessage("support.chat.close"));
   }
 }

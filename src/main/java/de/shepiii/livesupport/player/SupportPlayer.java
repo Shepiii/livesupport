@@ -18,16 +18,8 @@ public final class SupportPlayer {
     this.proxiedPlayer = proxiedPlayer;
   }
 
-  public void sendMessage(String message) {
-    proxiedPlayer.sendMessage(message);
-  }
-
   public void supportSession(SupportSession supportSession) {
     this.supportSession = Optional.ofNullable(supportSession);
-  }
-
-  public boolean hasPermission(String permission) {
-    return proxiedPlayer.hasPermission(permission);
   }
 
   public ProxiedPlayer proxiedPlayer() {

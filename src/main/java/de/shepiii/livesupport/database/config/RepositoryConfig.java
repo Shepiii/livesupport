@@ -1,4 +1,4 @@
-package de.shepiii.livesupport.repository.config;
+package de.shepiii.livesupport.database.config;
 
 import java.util.Properties;
 
