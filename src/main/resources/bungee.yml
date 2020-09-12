@@ -1,0 +1,5 @@
+name: LiveSupport
+description: Easy ingame-support for everyone
+main: de.shepiii.livesupport.LiveSupportPlugin
+version: 1.0.0
+author: Shepiii
